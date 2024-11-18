@@ -46,7 +46,7 @@ jobs:
             echo "Function not found. Creating new function..."
             aws lambda create-function \
               --function-name $FUNCTION_NAME \
-              --runtime nodejs14.x \
+              --runtime nodejs20.x \
               --role arn:aws:iam::376129852049:role/my-lambda-execution-role \
               --handler lambda_test.handler \
               --zip-file fileb://lambda_test.zip \
