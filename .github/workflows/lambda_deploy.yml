@@ -47,7 +47,7 @@ jobs:
             aws lambda create-function \
               --function-name $FUNCTION_NAME \
               --runtime nodejs20.x \
-              --role arn:aws:iam::376129852049:role/my-lambda-execution-role \
+              --role arn:aws:iam::376129852049:role/lambda-role \
               --handler lambda_test.handler \
               --zip-file fileb://lambda_test.zip \
               --region us-east-1
