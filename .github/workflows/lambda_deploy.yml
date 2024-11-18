@@ -34,8 +34,21 @@ jobs:
         run: zip -r lambda_test.zip lambda_test.js
 
       # Lambda 함수 배포
-      - name: Deploy to AWS Lambda
+      - name: Deploy to AWS Lambda (Create if not exists)
         run: |
-          aws lambda update-function-code \
-            --function-name my-lambda-function-name \
-            --zip-file fileb://lambda_test.zip
+          FUNCTION_NAME="my-lambda-function-name"
+          if aws lambda get-function --function-name $FUNCTION_NAME --region us-east-1; then
+            echo "Function exists. Updating code..."
+            aws lambda update-function-code \
+              --function-name $FUNCTION_NAME \
+              --zip-file fileb://lambda_test.zip
+          else
+            echo "Function not found. Creating new function..."
+            aws lambda create-function \
+              --function-name $FUNCTION_NAME \
+              --runtime nodejs14.x \
+              --role arn:aws:iam::376129852049:role/my-lambda-execution-role \
+              --handler lambda_test.handler \
+              --zip-file fileb://lambda_test.zip \
+              --region us-east-1
+          fi
